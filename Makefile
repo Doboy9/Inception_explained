@@ -6,7 +6,7 @@
 #    By: dboire <dboire@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/07 11:15:41 by dboire            #+#    #+#              #
-#    Updated: 2024/09/11 14:57:29 by dboire           ###   ########.fr        #
+#    Updated: 2024/09/11 16:17:04 by dboire           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,8 @@ all :
 	@sudo mkdir -p /home/dboire/data/mysql
 	@sudo mkdir -p /home/dboire/data/wordpress
 	@sudo docker-compose -f srcs/docker-compose.yml up -d --build --remove-orphans
-	@echo "Wait 10 seconds for the site to be online"
-	@for i in {1..10}; do \
+	@echo "Wait 5 seconds for the site to be online"
+	@for i in {1..5}; do \
 		echo -n "."; \
 		sleep 1; \
 	done

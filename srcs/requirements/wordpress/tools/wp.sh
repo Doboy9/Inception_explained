@@ -32,6 +32,21 @@ mkdir -p /run/php
 ./wp-cli.phar core install --url=${WORDPRESS_URL} --title=${TITLE} --admin_user=${WORDPRESS_ADMIN_USER} --admin_password=${WORDPRESS_ADMIN_PWD} --admin_email=${WORDPRESS_ADMIN_EMAIL} --allow-root
 ./wp-cli.phar user create ${WORDPRESS_USER} ${WORDPRESS_EMAIL} --role=subscriber --user_pass=${WORDPRESS_PASSWORD} --allow-root
 
+# Add Redis configuration to wp-config.php
+echo "define('WP_REDIS_HOST', 'redis');" >> wp-config.php
+echo "define('WP_REDIS_PORT', 6379);" >> wp-config.php
+echo "define('WP_CACHE_KEY_SALT', '${TITLE}');" >> wp-config.php
+echo "define('WP_CACHE', true);" >> wp-config.php
+
 chmod -R 775 wp-content
+
+# Install and activate Redis Object Cache plugin
+./wp-cli.phar plugin install redis-cache --activate --allow-root
+
+# Enable Redis Object Cache
+./wp-cli.phar redis enable --allow-root
+
+# Check Redis status
+./wp-cli.phar redis status --allow-root
 
 php-fpm7.4 -F
