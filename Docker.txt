@@ -1,0 +1,11 @@
+Les etapes pour utiliser Docker :
+
+Build (Construction) : Créez une image Docker à partir d'un Dockerfile en utilisant la commande docker build.
+
+Run (Exécution) : Démarrez un conteneur à partir d'une image avec docker run. Cela lance l'application dans un environnement isolé.
+
+Gérer : Utilisez des commandes Docker comme docker ps (pour lister les conteneurs en cours d'exécution), 
+docker stop (pour arrêter un conteneur en cours d'exécution), docker rm (pour supprimer un conteneur arrêté) et docker rmi (pour supprimer une image).
+
+Déployer : Les conteneurs peuvent être déployés dans n'importe quel environnement supportant Docker, assurant une cohérence du développement à la production.
+

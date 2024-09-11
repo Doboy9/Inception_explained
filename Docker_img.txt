@@ -1,0 +1,27 @@
+(Docker)Images :
+
+Un Dockerfile est un script texte contenant une série d'instructions que Docker utilise pour construire une image.
+On utilise la commande docker build pour créer une image à partir d'un Dockerfile.
+Le docker-compose.yml fera un build grace a :
+  mariadb:
+    build: requirements/mariadb -> Indique le chemin pour executer **docker build** et construire une image.
+
+A noter que FROM debian:bullseye -> est une image.
+
+
+Les images sont statiques et ne changent pas. Pour exécuter l'application, Docker transforme l'image en un conteneur via la commande docker run
+
+Dockerfile :
+
+Un Dockerfile fonctionne en spécifiant étape par étape ce que Docker doit faire pour préparer l'environnement d'application.
+Un Dockerfile est composé d'instructions, chacune correspondant à une étape de la construction de l'image.
+
+FROM : Indique l'image de base à utiliser. C'est souvent le point de départ de votre Dockerfile. Par exemple, FROM ubuntu:latest utilise l'image officielle d'Ubuntu comme base.
+
+RUN : Exécute une commande dans le processus de construction de l'image. 
+Cela peut inclure l'installation de logiciels, la mise à jour de paquets, ou la configuration du système. Par exemple, RUN apt-get update && apt-get install -y python3 installe Python 3 dans l'image.
+
+COPY ou ADD : Copie des fichiers ou répertoires de votre machine hôte vers l'image Docker. COPY app.py /app/ place le fichier app.py dans le répertoire /app de l'image.
+
+CMD et ENTRYPOINT : Spécifient la commande à exécuter lorsque le conteneur démarre. Par exemple, CMD ["python3", "/app/app.py"] définit que le conteneur doit exécuter ce script Python par défaut.
+
