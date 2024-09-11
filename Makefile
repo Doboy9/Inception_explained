@@ -6,7 +6,7 @@
 #    By: dboire <dboire@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/07 11:15:41 by dboire            #+#    #+#              #
-#    Updated: 2024/09/08 17:46:06 by dboire           ###   ########.fr        #
+#    Updated: 2024/09/11 14:57:29 by dboire           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,9 +18,11 @@ SHELL := /bin/bash # Allow to run the bash script below
 
 
 all :
-	@sudo docker-compose -f docker_compose.yml up -d --build --remove-orphans
-	@echo "Wait 15 seconds for the site to be online"
-	@for i in {1..15}; do \
+	@sudo mkdir -p /home/dboire/data/mysql
+	@sudo mkdir -p /home/dboire/data/wordpress
+	@sudo docker-compose -f srcs/docker-compose.yml up -d --build --remove-orphans
+	@echo "Wait 10 seconds for the site to be online"
+	@for i in {1..10}; do \
 		echo -n "."; \
 		sleep 1; \
 	done
@@ -34,8 +36,9 @@ all :
 # @sudo rm -rf /home/dboire/data/wordpress -> remove the wordpress directory where we used to keep the wordpress data
 
 down :
-	@-docker compose -f docker_compose.yml stop
+	@-docker compose -f srcs/docker-compose.yml stop
 	@-docker system prune -a -f
 	@-docker network prune -f
 	@-docker volume prune -f
 	@-docker volume rm srcs_database srcs_wordpress
+	@-sudo rm -rf /home/dboire/data

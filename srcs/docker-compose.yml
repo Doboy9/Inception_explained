@@ -1,0 +1,63 @@
+services:
+
+  mariadb:
+    build: requirements/mariadb # path to the dockerfile
+    container_name: mariadb
+    env_file:
+      - .env
+      - ../secrets/.db_password.txt
+      - ../secrets/.db_root_password.txt
+      - ../secrets/.credentials.txt
+    volumes:
+      - database:/var/lib/mysql
+    networks:
+      - inception
+      # networks are used to allow containers to communicate with each other
+
+  nginx:
+    build: requirements/nginx
+    container_name: nginx
+    depends_on:
+      - wordpress
+      - mariadb
+    ports:
+      - "443:443"
+    env_file: .env
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - inception
+
+  wordpress:
+    build: requirements/wordpress
+    container_name: wp-php
+    env_file:
+      - ../secrets/.db_password.txt
+      - ../secrets/.db_root_password.txt
+      - .env
+    depends_on:
+      - mariadb
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - inception
+    ports:
+      - "8080:80"
+
+volumes:
+  database:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/dboire/data/mysql
+  wordpress:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/dboire/data/wordpress
+
+networks:
+  inception:
+    driver: bridge

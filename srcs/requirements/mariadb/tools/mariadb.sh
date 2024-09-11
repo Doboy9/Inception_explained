@@ -7,6 +7,7 @@ mysql_install_db --user=mysql --datadir=/var/lib/mysql
 mariadbd --user=mysql --bootstrap <<EOF
 # switching to the mysql database
 USE mysql;
+FLUSH PRIVILEGES;
 
 # Removing the default user and database
 DROP USER IF EXISTS ''@'localhost';

@@ -5,7 +5,7 @@ RUN apt update && apt install -y nginx
 #We update to see if everything is up to date and we download nginx, the -y is to say Y to a bash script, if not defined it would quit the image creation.
 RUN mkdir -p /etc/nginx/ssl
 # Creating a directory that will stock the certificate and the key for the secure connexion.
-RUN apt install OpenSSL -y
+RUN apt install openssl -y
 # OpenSSL is the tool for creationg and using SSL certificate
 RUN openssl req -x509 -nodes -out /etc/nginx/ssl/inception.crt -keyout /etc/nginx/ssl/inception.key -subj "/C=FR/ST=NA/L=Angouleme/O=42/OU=42/CN=dboire.42.fr/UID=dboire"
 # openssl req generate an SSL certificate / -x509 is the type of the certificate / -nodes out private key will not have a password / 
