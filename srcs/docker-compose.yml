@@ -45,6 +45,7 @@ services:
       - inception
     ports:
       - "8080:80"
+
   redis:
     build: requirements/redis
     container_name: redis
@@ -52,6 +53,30 @@ services:
       - mariadb
     ports:
       - "6379:6379"
+    networks:
+      - inception
+
+  ftp:
+    build: requirements/FTP
+    container_name: ftp
+    ports:
+      - "20:20"
+      - "21:21"
+      - "21100-21110:21100-21110"
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - inception
+
+  portainer:
+    build: requirements/portainer
+    container_name: portainer
+    ports:
+      - "8000:8000"
+      - "9443:9443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
     networks:
       - inception
 
@@ -68,6 +93,8 @@ volumes:
       type: none
       o: bind
       device: /home/dboire/data/wordpress
+  portainer_data:
+
 
 networks:
   inception:

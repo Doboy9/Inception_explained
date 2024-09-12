@@ -6,7 +6,7 @@
 #    By: dboire <dboire@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/07 11:15:41 by dboire            #+#    #+#              #
-#    Updated: 2024/09/11 16:17:04 by dboire           ###   ########.fr        #
+#    Updated: 2024/09/12 19:44:15 by dboire           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,8 @@ all :
 	@sudo mkdir -p /home/dboire/data/mysql
 	@sudo mkdir -p /home/dboire/data/wordpress
 	@sudo docker-compose -f srcs/docker-compose.yml up -d --build --remove-orphans
-	@echo "Wait 5 seconds for the site to be online"
-	@for i in {1..5}; do \
+	@echo "Wait 10 seconds for the site to be online"
+	@for i in {1..10}; do \
 		echo -n "."; \
 		sleep 1; \
 	done
@@ -32,6 +32,7 @@ all :
 # @docker system prune -a -f -> silently removes all unused Docker data
 # @docker network prune -f -> removes all unused Docker networks
 # @-docker volume rm srcs_database srcs_wordpress -> removes all the volumes that we mounted during the make on our pc
+# !!!!!!!!!!!!!!!!!! MAKE SURE TO DELETE ALL THE VOLUMES, VERY IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # @sudo rm -rf /home/dboire/data/mysql -> remove the mysql directory where we used to keep the database data
 # @sudo rm -rf /home/dboire/data/wordpress -> remove the wordpress directory where we used to keep the wordpress data
 
@@ -40,5 +41,5 @@ down :
 	@-docker system prune -a -f
 	@-docker network prune -f
 	@-docker volume prune -f
-	@-docker volume rm srcs_database srcs_wordpress
+	@-docker volume rm srcs_database srcs_wordpress srcs_portainer_data
 	@-sudo rm -rf /home/dboire/data
