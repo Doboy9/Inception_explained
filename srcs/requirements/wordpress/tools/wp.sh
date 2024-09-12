@@ -23,7 +23,6 @@ if [ ! -f /usr/local/bin/wp ]; then
     chmod +x wp-cli.phar
 fi
 
-mkdir -p /run/php
 
 
 # wp cli is for configuring wordpress without writing directly the data in the wp config, with the variables contained in the .env
@@ -32,21 +31,21 @@ mkdir -p /run/php
 ./wp-cli.phar core install --url=${WORDPRESS_URL} --title=${TITLE} --admin_user=${WORDPRESS_ADMIN_USER} --admin_password=${WORDPRESS_ADMIN_PWD} --admin_email=${WORDPRESS_ADMIN_EMAIL} --allow-root
 ./wp-cli.phar user create ${WORDPRESS_USER} ${WORDPRESS_EMAIL} --role=subscriber --user_pass=${WORDPRESS_PASSWORD} --allow-root
 
-# Add Redis configuration to wp-config.php
-echo "define('WP_REDIS_HOST', 'redis');" >> wp-config.php
-echo "define('WP_REDIS_PORT', 6379);" >> wp-config.php
-echo "define('WP_CACHE_KEY_SALT', '${TITLE}');" >> wp-config.php
-echo "define('WP_CACHE', true);" >> wp-config.php
-
 chmod -R 775 wp-content
+chown -R www-data:www-data /var/www/html
+chmod -R 755 /var/www/html
 
-# Install and activate Redis Object Cache plugin
+## redis ##
+./wp-cli.phar config set WP_REDIS_HOST redis --allow-root
+./wp-cli.phar config set WP_REDIS_PORT 6379 --raw --allow-root
+./wp-cli.phar config set WP_CACHE_KEY_SALT $DOMAIN_NAME --allow-root
+./wp-cli.phar config set WP_REDIS_CLIENT phpredis --allow-root
 ./wp-cli.phar plugin install redis-cache --activate --allow-root
-
-# Enable Redis Object Cache
+./wp-cli.phar plugin update --all --allow-root
 ./wp-cli.phar redis enable --allow-root
 
-# Check Redis status
-./wp-cli.phar redis status --allow-root
+mkdir -p /run/php
+
+# Install and activate Redis Object Cache plugin
 
 php-fpm7.4 -F

@@ -34,6 +34,7 @@ services:
     env_file:
       - ../secrets/.db_password.txt
       - ../secrets/.db_root_password.txt
+      - ../secrets/.credentials.txt
       - .env
     depends_on:
       - mariadb
@@ -44,10 +45,11 @@ services:
       - inception
     ports:
       - "8080:80"
-
   redis:
     build: requirements/redis
     container_name: redis
+    depends_on:
+      - mariadb
     ports:
       - "6379:6379"
     networks:
