@@ -80,6 +80,14 @@ services:
     networks:
       - inception
 
+  static_site:
+    build: requirements/static_site
+    container_name: static_site
+    ports:
+      - "8050:8050"
+    networks:
+      - inception
+
 volumes:
   database:
     driver: local
